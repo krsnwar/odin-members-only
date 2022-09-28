@@ -1,25 +1,31 @@
-<h1>Show All Posts</h1>
+<%= render "navbar" %>
 
-<% if @posts.present? %>
-  <% @posts.each do |post| %>
-    <div>
-      <h4><%= post.title %></h4>
-      <p><%= post.body %></p>
-      <% if user_signed_in? %>
-        <p><%= @users.find(post.user_id).email %></p>
+<div class="container mt-3">
+  <div class="d-flex justify-content-between">
+    <h1>Show All Posts</h1>
+    <% if user_signed_in? %>
+      <%= link_to "Create Post", new_post_path, class: "btn btn-success" %>
+    <% end %>
+  </div>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <% if @posts.present? %>
+        <% @posts.each do |post| %>
+          <div class="col-lg-3 m-2 d-flex align-items-stretch">
+            <div class="card p-2 w-100">
+              <h4 class="card-title text-center"><%= post.title %></h4>
+              <p class="card-text"><%= post.body %></p>
+              <% if user_signed_in? %>
+                <p><%= "Author: #{@users.find(post.user_id).email}" %></p>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="d-flex justify-content-center">
+          <h4>No Post!</h4>
+        </div>
       <% end %>
     </div>
-  <% end %>
-<% else %>
-  <div>
-    <h4>No Post!</h4>
   </div>
-<% end %>
-
-<%= link_to "Create Post", new_post_path %>
-<br>
-<% if user_signed_in? %>
-  <%= button_to "Sign Out", destroy_user_session_path, :method => :delete %>
-<% else %>
-  <%= button_to "Sign In",  user_session_path %>
-<% end %>
+</div>

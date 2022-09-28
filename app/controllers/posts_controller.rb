@@ -11,8 +11,13 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = Post.new(post_params)
-    @post.user_id = current_user.id
+    # Long version
+    # @post = Post.new(post_params)
+    # @post.user_id = current_user.id
+
+    # Short Version
+    @post = current_user.posts.create(post_params)
+
 
     if @post.save
         redirect_to posts_path
