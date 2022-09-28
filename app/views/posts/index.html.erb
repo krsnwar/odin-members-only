@@ -1,10 +1,13 @@
 <h1>Show All Posts</h1>
 
-<% if @post %>
-  <%= @posts.each do |post| %>
+<% if @posts.present? %>
+  <% @posts.each do |post| %>
     <div>
       <h4><%= post.title %></h4>
       <p><%= post.body %></p>
+      <% if user_signed_in? %>
+        <p><%= @users.find(post.user_id).email %></p>
+      <% end %>
     </div>
   <% end %>
 <% else %>
@@ -14,3 +17,9 @@
 <% end %>
 
 <%= link_to "Create Post", new_post_path %>
+<br>
+<% if user_signed_in? %>
+  <%= button_to "Sign Out", destroy_user_session_path, :method => :delete %>
+<% else %>
+  <%= button_to "Sign In",  user_session_path %>
+<% end %>
